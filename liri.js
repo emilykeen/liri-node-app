@@ -53,15 +53,15 @@ if (command === "my-tweets") {
         // If there were no errors and the response code was 200 (i.e. the request was successful)...
         if (!error && response.statusCode === 200) {
 
-                //Artist(s)
+            //Artist(s)
 
-     console.log("The artist is: "+ JSON.parse(body).tracks.items[0].artists[0].name);
-    // The song's name
-    console.log("The song name is: " +JSON.parse(body).tracks.items[0].name);
-    // A preview link of the song from Spotify
-    console.log("A preview link of song: " +JSON.parse(body).tracks.items[0].preview_url);
-    // The album that the song is from
-    console.log("The album is: " +JSON.parse(body).tracks.items[0].album.name);
+            console.log("The artist is: " + JSON.parse(body).tracks.items[0].artists[0].name);
+            // The song's name
+            console.log("The song name is: " + JSON.parse(body).tracks.items[0].name);
+            // A preview link of the song from Spotify
+            console.log("A preview link of song: " + JSON.parse(body).tracks.items[0].preview_url);
+            // The album that the song is from
+            console.log("The album is: " + JSON.parse(body).tracks.items[0].album.name);
 
 
         }
@@ -96,44 +96,63 @@ if (command === "my-tweets") {
         console.log("It's on Netflix!");
     }
 
-        // We then run the request module on a URL with a JSON
-        request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&r=json", function(error, response, body) {
+    // We then run the request module on a URL with a JSON
+    request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&r=json", function(error, response, body) {
+
+        // If there were no errors and the response code was 200 (i.e. the request was successful)...
+        if (!error && response.statusCode === 200) {
+
+            // * Title of the movie.
+            console.log("The movie's title is: " + JSON.parse(body).Title);
+            // * Year the movie came out.
+            console.log("The movie came out in : " + JSON.parse(body).Released);
+            // * IMDB Rating of the movie.
+            console.log("The movie's IMDB rating is: " + JSON.parse(body).imdbRating);
+            // * Country where the movie was produced.
+            console.log("The movie was produced in: " + JSON.parse(body).Country);
+            // * Language of the movie.
+            console.log("The movie's language is: " + JSON.parse(body).Language);
+            // * Plot of the movie.
+            console.log("The movie's plot is: " + JSON.parse(body).Plot);
+            // * Actors in the movie.
+            console.log("The movie's actors are: " + JSON.parse(body).Actors);
+            // * Rotten Tomatoes Rating.
+            console.log("The movie's Rotten Tomatoes Rating is: " + JSON.parse(body).Ratings[1].Value)
+
+        }
+    });
+
+} else if (command === "do-what-it-says") {
+
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        //split data from random.txt using comma and store in an Array for use as parameters for function call
+        var dataArr = data.split(",");
+        console.log(dataArr);
+        console.log(dataArr[0], dataArr[1]);
+        song = (dataArr[1]);
+        console.log(song);
+
+        request("https://api.spotify.com/v1/search?q=" + song + "&type=track&limit=1", function(error, response, body) {
 
             // If there were no errors and the response code was 200 (i.e. the request was successful)...
             if (!error && response.statusCode === 200) {
 
-                // * Title of the movie.
-                console.log("The movie's title is: " + JSON.parse(body).Title);
-                // * Year the movie came out.
-                console.log("The movie came out in : " + JSON.parse(body).Released);
-                // * IMDB Rating of the movie.
-                console.log("The movie's IMDB rating is: " + JSON.parse(body).imdbRating);
-                // * Country where the movie was produced.
-                console.log("The movie was produced in: " + JSON.parse(body).Country);
-                // * Language of the movie.
-                console.log("The movie's language is: " + JSON.parse(body).Language);
-                // * Plot of the movie.
-                console.log("The movie's plot is: " + JSON.parse(body).Plot);
-                // * Actors in the movie.
-                console.log("The movie's actors are: " + JSON.parse(body).Actors);
-                // * Rotten Tomatoes Rating.
-                console.log("The movie's Rotten Tomatoes Rating is: " + JSON.parse(body).Ratings[1].Value)
+                //Artist(s)
+
+                console.log("The artist is: " + JSON.parse(body).tracks.items[0].artists[0].name);
+                // The song's name
+                console.log("The song name is: " + JSON.parse(body).tracks.items[0].name);
+                // A preview link of the song from Spotify
+                console.log("A preview link of song: " + JSON.parse(body).tracks.items[0].preview_url);
+                // The album that the song is from
+                console.log("The album is: " + JSON.parse(body).tracks.items[0].album.name);
+
 
             }
         });
 
-    } else if (command === "do-what-it-says") {
-
-        fs.readFile("random.txt", "utf8", function(error, data) {
-            //split data from random.txt using comma and store in an Array for use as parameters for function call
-            var dataArr = data.split(",");
-            console.log(dataArr);
-            console.log(dataArr[0], dataArr[1]);
-            nodeArgs1 = (dataArr[0]);
-            song = (dataArr[1]);
-            console.log(nodeArgs1);
-            console.log(song);
 
 
-        });
-    }
+
+    });
+}
